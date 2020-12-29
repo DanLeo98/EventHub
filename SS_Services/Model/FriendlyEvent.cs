@@ -8,7 +8,7 @@ namespace EventHub.Model
     public class FriendlyEvent: Event
     {
 
-        FriendlyEvent()
+        public FriendlyEvent()
         {
 
         }

@@ -36,12 +36,7 @@ namespace EventHub.Model
         public EventStatus Status { get => status; set => status = value; }
         #endregion
 
-        //protected Event()         // o que faz o protected?
-        //{
-
-        //}
-
-        public Event()
+        protected Event()
         {
             
         }
