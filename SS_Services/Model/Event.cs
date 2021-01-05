@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace EventHub.Model
 {
@@ -25,8 +24,6 @@ namespace EventHub.Model
         string description;
         int slots;
         EventStatus status;
-        int sportId;
-        int teamMax;
 
         #region PROPERTIES
         public int Id { get => id; set => id = value; }
@@ -37,21 +34,11 @@ namespace EventHub.Model
         public string Description { get => description; set => description = value; }
         public int Slots { get => slots; set => slots = value; } // only values > 0
         public EventStatus Status { get => status; set => status = value; }
-        public int SportId { get => sportId; set => sportId = value; }
-        public int TeamMax { get => teamMax; set => teamMax = value; }
         #endregion
 
         protected Event()
         {
             
         }
-
-        public bool ValidateObject()
-        {
-            if (1 == 1) return true;
-            //return false;
-        }
-
-
     }
 }
