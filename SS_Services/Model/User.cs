@@ -14,25 +14,25 @@ namespace EventHub.Model
         Account account;
 
         #region PROPERTIES
-        int ID { get; set; }
-        string Name { get; set; }
-        string Email { get; set; }
-        string Password { get; set; }
+        int Id { get => id; set => id = value; }
+        string Name { get => name; set => name = value; }
+        string Email { get => email; set => email = value; }
+        string Password { get => password; set => password = value; }
         #endregion
 
 
-        User()
+        public User()
         {
-            
+            account = new Account();
         }
 
-        User(string name, string email, string password)
+        public User(string name, string email, string password)
         {
-
+            account = new Account();
         }
 
         #region FUNCTIONS
-        bool CheckCredentials()
+        public bool CheckCredentials()
         {
             return true;
         }

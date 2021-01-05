@@ -10,10 +10,11 @@ namespace EventHub.Model
         string name;
 
         #region PROPERTIES
-        string Name { get; set; }
+        string Name { get => name; set => name = value; }
         #endregion
-        Sport()
+        public Sport()
         {
+
         }
     }
 }

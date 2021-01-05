@@ -13,7 +13,7 @@ namespace EventHub.Model
 
         #region PROPERTIES
         public string Address { get => address; set => address = value; }
-        public string ShippingAddress { get => shippingAddress; set => address = value; }
+        public string ShippingAddress { get => shippingAddress; set => shippingAddress = value; }
         public string BankId { get => bankId; set => bankId = value; }
         #endregion
 
