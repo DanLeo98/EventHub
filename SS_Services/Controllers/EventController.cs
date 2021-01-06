@@ -57,30 +57,37 @@ namespace EventHub.Controllers
         [HttpPost("createFriendlyEvent")]
         public ActionResult CreateFriendlyEvent(string ev, int userId)
         {
-            Event eve = (Event)JsonConvert.DeserializeObject(ev,typeof(Event));
-            if (eve.ValidateObject())
+            try
             {
-                try
+                RootObject eve = JsonConvert.DeserializeObject<RootObject>(ev);
+                if (eve.Event.ValidateObject())
                 {
-                    using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                    try
                     {
-                        conn.Open();
+                        using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                        {
+                            conn.Open();
 
-                        string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,sportid,userid,team_max)" +
-                            "VALUES('" + eve.Name + "','" + eve.StartDate.ToString("yyyy’-‘MM’-‘dd") + "','" + eve.EndDate.ToString("yyyy’-‘MM’-‘dd")
-                            + eve.Description + "'," + eve.Slots + ",'" + eve.Local + "'," + (int)eve.Status + "," + eve.SportId + "," + userId + "," + eve.TeamMax + ");";
-                        NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-                        int rowsAff = cmd.ExecuteNonQuery();
-                        conn.Close();
+                            string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,sportid,userid,team_max)" +
+                                "VALUES('" + eve.Event.Name + "','" + eve.Event.StartDate.ToString("yyyy’-‘MM’-‘dd") + "','" + eve.Event.EndDate.ToString("yyyy’-‘MM’-‘dd")
+                                + eve.Event.Description + "'," + eve.Event.Slots + ",'" + eve.Event.Local + "'," + (int)eve.Event.Status + "," + eve.Event.SportId + "," + userId + "," + eve.Event.TeamMax + ");";
+                            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+                            int rowsAff = cmd.ExecuteNonQuery();
+                            conn.Close();
 
-                        if (rowsAff == 1) return Ok();
+                            if (rowsAff == 1) return Ok();
+                        }
                     }
-                } catch (Exception ex)
-                {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable);
-                }            
+                    catch (Exception e)
+                    {
+                        return StatusCode(StatusCodes.Status503ServiceUnavailable);
+                    }
+                }
+                return Unauthorized();
+            } catch (Exception e)
+            {
+                return BadRequest();
             }
-            return Unauthorized();
         }
 
 

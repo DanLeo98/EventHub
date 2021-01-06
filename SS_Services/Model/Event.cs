@@ -2,9 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace EventHub.Model
 {
+
+    public class RootObject
+    {
+        [JsonProperty("event")]
+        public Event Event { get; set; }
+    }
+
     public enum EventStatus
     {
         open,
@@ -13,6 +21,7 @@ namespace EventHub.Model
         expired,
         cancelled
     }
+    
     public class Event
     {
         int id;
@@ -42,13 +51,13 @@ namespace EventHub.Model
         [JsonProperty("initial_Date")]
         public DateTime StartDate { get => startDate; set => startDate = value; } // check if date > present
         [JsonProperty("end_Date")]
-        public string Local { get => local; set => local = value; }
+        public DateTime EndDate { get => endDate; set => endDate = value; } // check if endDate > startDate + date > present
         [JsonProperty("description")]
         public string Description { get => description; set => description = value; }
         [JsonProperty("slots")]
-        public DateTime EndDate { get => endDate; set => endDate = value; } // check if endDate > startDate + date > present
-        [JsonProperty("local")]
         public int Slots { get => slots; set => slots = value; } // only values > 0
+        [JsonProperty("local")]
+        public string Local { get => local; set => local = value; }
         [JsonProperty("status")]
         public EventStatus Status { get => status; set => status = value; }
         [JsonProperty("sportId")]
