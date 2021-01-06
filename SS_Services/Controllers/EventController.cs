@@ -6,67 +6,58 @@ using Npgsql;
 using System.Configuration;
 using System.Data;
 using EventHub.Model;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 
 namespace EventHub.Controllers
 {
     [ApiController]
-    [Route("api/event")]
+    [Route("events")]
     public class EventController : Controller
     {
         string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
-        /*
-         * 
+        
         [HttpGet("getFriendlyEvents")]
-        public DataSet GetFriendlyEvents()
-        {
-            DataSet ds = new DataSet();
-            using (NpgsqlConnection conn = new NpgsqlConnection(connString))
-            {
-                string query = "SELECT * FROM event WHERE entryFee IS NULL;";
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(query, conn);
-                da.Fill(ds, "Events");
-            }
-            return ds;
-        }
-        */
-
-        [HttpGet("getFriendlyEvents")]
-        public List<Event> GetFriendlyEvents()
+        public ActionResult GetFriendlyEvents()
         {
             List<Event> events = new List<Event>();
-            using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+            try
             {
-                conn.Open();
-
-                string query = "SELECT * FROM event WHERE entryFee IS NULL;";
-                NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
                 {
-                    FriendlyEvent friendly = new FriendlyEvent();
+                    conn.Open();
 
-                    friendly.Id = reader.GetInt32(0);
-                    friendly.Name = reader.GetString(1);
-                    friendly.StartDate = reader.GetDateTime(2);
-                    friendly.EndDate = reader.GetDateTime(3);
-                    friendly.Description = reader.GetString(4);
-                    friendly.Slots = reader.GetInt32(5);
-                    friendly.Local = reader.GetString(6);
-                    friendly.Status = (EventStatus)reader.GetInt32(7);
+                    string query = "SELECT * FROM event WHERE entryFee IS NULL;";
+                    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+                    NpgsqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        FriendlyEvent friendly = new FriendlyEvent();
 
-                    events.Add(friendly);
+                        friendly.Id = reader.GetInt32(0);
+                        friendly.Name = reader.GetString(1);
+                        friendly.StartDate = reader.GetDateTime(2);
+                        friendly.EndDate = reader.GetDateTime(3);
+                        friendly.Description = reader.GetString(4);
+                        friendly.Slots = reader.GetInt32(5);
+                        friendly.Local = reader.GetString(6);
+                        friendly.Status = (EventStatus)reader.GetInt32(7);
+
+                        events.Add(friendly);
+                    }
+                    conn.Close();
                 }
-
-                conn.Close();
+            } catch (Exception ex) {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable);
             }
-            return events;
+            return Ok(events);
         }
+
         [HttpPost("createFriendlyEvent")]
-        public bool CreateFriendlyEvent(string ev, int userId)
+        public ActionResult CreateFriendlyEvent(string ev, int userId)
         {
-            FriendlyEvent eve = JsonConvert.DeserializeObject<FriendlyEvent>(ev);
+            Event eve = (Event)JsonConvert.DeserializeObject(ev,typeof(Event));
             if (eve.ValidateObject())
             {
                 try
@@ -82,20 +73,16 @@ namespace EventHub.Controllers
                         int rowsAff = cmd.ExecuteNonQuery();
                         conn.Close();
 
-                        if (rowsAff == 1) return true;
+                        if (rowsAff == 1) return Ok();
                     }
                 } catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
-                }            }
-            return false;
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable);
+                }            
+            }
+            return Unauthorized();
         }
 
-        /*
-        public IActionResult Index()
-        {
-            return View();
-        }
-        */
+
     }
 }

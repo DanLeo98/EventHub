@@ -11,13 +11,13 @@ namespace EventHub.Model
         string name;
         string email;
         string password;
-        Account account;
+        public Account account;
 
         #region PROPERTIES
-        int ID { get; set; }
-        string Name { get; set; }
-        string Email { get; set; }
-        string Password { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         #endregion
 
 
@@ -35,6 +35,12 @@ namespace EventHub.Model
         bool CheckCredentials()
         {
             return true;
+        }
+
+        public bool ValidateObject()
+        {
+            if (1 == 1) return true;
+            //return false;
         }
         #endregion
 
