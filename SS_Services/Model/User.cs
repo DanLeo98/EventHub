@@ -21,18 +21,18 @@ namespace EventHub.Model
         #endregion
 
 
-        User()
+        public User()
         {
-            
+            account = new Account();
         }
 
-        User(string name, string email, string password)
+        public User(string name, string email, string password)
         {
-
+            account = new Account();
         }
 
         #region FUNCTIONS
-        bool CheckCredentials()
+        public bool CheckCredentials()
         {
             return true;
         }
