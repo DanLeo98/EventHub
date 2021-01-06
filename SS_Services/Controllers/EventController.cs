@@ -33,7 +33,7 @@ namespace EventHub.Controllers
                     NpgsqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        FriendlyEvent friendly = new FriendlyEvent();
+                        Event friendly = new Event();
 
                         friendly.Id = reader.GetInt32(0);
                         friendly.Name = reader.GetString(1);
