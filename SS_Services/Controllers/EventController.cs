@@ -59,8 +59,8 @@ namespace EventHub.Controllers
         {
             try
             {
-                RootObject eve = JsonConvert.DeserializeObject<RootObject>(ev);
-                if (eve.Event.ValidateObject())
+            RootObject root = JsonConvert.DeserializeObject<RootObject>(ev);
+                if (root.Event.ValidateObject())
                 {
                     try
                     {
@@ -69,8 +69,8 @@ namespace EventHub.Controllers
                             conn.Open();
 
                             string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,sportid,userid,team_max)" +
-                                "VALUES('" + eve.Event.Name + "','" + eve.Event.StartDate.ToString("yyyy’-‘MM’-‘dd") + "','" + eve.Event.EndDate.ToString("yyyy’-‘MM’-‘dd")
-                                + eve.Event.Description + "'," + eve.Event.Slots + ",'" + eve.Event.Local + "'," + (int)eve.Event.Status + "," + eve.Event.SportId + "," + userId + "," + eve.Event.TeamMax + ");";
+                                "VALUES('" + root.Event.Name + "','" + root.Event.StartDate.ToString("yyyy’-‘MM’-‘dd") + "','" + root.Event.EndDate.ToString("yyyy’-‘MM’-‘dd")
+                                + root.Event.Description + "'," + root.Event.Slots + ",'" + root.Event.Local + "'," + (int)root.Event.Status + "," + root.Event.SportId + "," + userId + "," + root.Event.TeamMax + ");";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
                             int rowsAff = cmd.ExecuteNonQuery();
                             conn.Close();

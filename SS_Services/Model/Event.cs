@@ -6,11 +6,12 @@ using Newtonsoft.Json;
 
 namespace EventHub.Model
 {
-
     public class RootObject
     {
         [JsonProperty("event")]
         public Event Event { get; set; }
+        [JsonProperty("user")]
+        public User User { get; set; }
     }
 
     public enum EventStatus
