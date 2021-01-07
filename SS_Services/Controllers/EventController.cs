@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Npgsql;
 using System.Configuration;
 using System.Data;
-using EventHub.Model;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-
+using Entities.EntitiesService;
 
 namespace EventHub.Controllers
 {
