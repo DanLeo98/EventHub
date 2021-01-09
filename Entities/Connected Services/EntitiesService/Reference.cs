@@ -122,7 +122,13 @@ namespace Entities.EntitiesService {
         private System.DateTime EndDateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<float> EntryFeeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime InitialDateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LocalField;
@@ -135,9 +141,6 @@ namespace Entities.EntitiesService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SportIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime StartDateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Entities.EntitiesService.EventStatus StatusField;
@@ -182,6 +185,19 @@ namespace Entities.EntitiesService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<float> EntryFee {
+            get {
+                return this.EntryFeeField;
+            }
+            set {
+                if ((this.EntryFeeField.Equals(value) != true)) {
+                    this.EntryFeeField = value;
+                    this.RaisePropertyChanged("EntryFee");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int Id {
             get {
                 return this.IdField;
@@ -190,6 +206,19 @@ namespace Entities.EntitiesService {
                 if ((this.IdField.Equals(value) != true)) {
                     this.IdField = value;
                     this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime InitialDate {
+            get {
+                return this.InitialDateField;
+            }
+            set {
+                if ((this.InitialDateField.Equals(value) != true)) {
+                    this.InitialDateField = value;
+                    this.RaisePropertyChanged("InitialDate");
                 }
             }
         }
@@ -242,19 +271,6 @@ namespace Entities.EntitiesService {
                 if ((this.SportIdField.Equals(value) != true)) {
                     this.SportIdField = value;
                     this.RaisePropertyChanged("SportId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime StartDate {
-            get {
-                return this.StartDateField;
-            }
-            set {
-                if ((this.StartDateField.Equals(value) != true)) {
-                    this.StartDateField = value;
-                    this.RaisePropertyChanged("StartDate");
                 }
             }
         }
@@ -476,22 +492,19 @@ namespace Entities.EntitiesService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Entities.EntitiesService.Account AccountField;
+        private int AccountIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IDField;
+        private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PasswordField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Entities.EntitiesService.Account account1Field;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -504,14 +517,14 @@ namespace Entities.EntitiesService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Entities.EntitiesService.Account Account {
+        public int AccountId {
             get {
-                return this.AccountField;
+                return this.AccountIdField;
             }
             set {
-                if ((object.ReferenceEquals(this.AccountField, value) != true)) {
-                    this.AccountField = value;
-                    this.RaisePropertyChanged("Account");
+                if ((this.AccountIdField.Equals(value) != true)) {
+                    this.AccountIdField = value;
+                    this.RaisePropertyChanged("AccountId");
                 }
             }
         }
@@ -530,14 +543,14 @@ namespace Entities.EntitiesService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ID {
+        public int Id {
             get {
-                return this.IDField;
+                return this.IdField;
             }
             set {
-                if ((this.IDField.Equals(value) != true)) {
-                    this.IDField = value;
-                    this.RaisePropertyChanged("ID");
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
                 }
             }
         }
@@ -568,15 +581,63 @@ namespace Entities.EntitiesService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(Name="account")]
-        public Entities.EntitiesService.Account account1 {
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="RootObject", Namespace="http://schemas.datacontract.org/2004/07/")]
+    [System.SerializableAttribute()]
+    public partial class RootObject : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Entities.EntitiesService.Event EventField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Entities.EntitiesService.User UserField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
-                return this.account1Field;
+                return this.extensionDataField;
             }
             set {
-                if ((object.ReferenceEquals(this.account1Field, value) != true)) {
-                    this.account1Field = value;
-                    this.RaisePropertyChanged("account1");
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Entities.EntitiesService.Event Event {
+            get {
+                return this.EventField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EventField, value) != true)) {
+                    this.EventField = value;
+                    this.RaisePropertyChanged("Event");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Entities.EntitiesService.User User {
+            get {
+                return this.UserField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserField, value) != true)) {
+                    this.UserField = value;
+                    this.RaisePropertyChanged("User");
                 }
             }
         }
@@ -596,10 +657,10 @@ namespace Entities.EntitiesService {
     public interface IService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/AssignClasses", ReplyAction="http://tempuri.org/IService/AssignClassesResponse")]
-        void AssignClasses(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user);
+        void AssignClasses(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user, Entities.EntitiesService.RootObject rootObject);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/AssignClasses", ReplyAction="http://tempuri.org/IService/AssignClassesResponse")]
-        System.Threading.Tasks.Task AssignClassesAsync(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user);
+        System.Threading.Tasks.Task AssignClassesAsync(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user, Entities.EntitiesService.RootObject rootObject);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -629,12 +690,12 @@ namespace Entities.EntitiesService {
                 base(binding, remoteAddress) {
         }
         
-        public void AssignClasses(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user) {
-            base.Channel.AssignClasses(account, eventA, prize, sport, team, user);
+        public void AssignClasses(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user, Entities.EntitiesService.RootObject rootObject) {
+            base.Channel.AssignClasses(account, eventA, prize, sport, team, user, rootObject);
         }
         
-        public System.Threading.Tasks.Task AssignClassesAsync(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user) {
-            return base.Channel.AssignClassesAsync(account, eventA, prize, sport, team, user);
+        public System.Threading.Tasks.Task AssignClassesAsync(Entities.EntitiesService.Account account, Entities.EntitiesService.Event eventA, Entities.EntitiesService.Prize prize, Entities.EntitiesService.Sport sport, Entities.EntitiesService.Team team, Entities.EntitiesService.User user, Entities.EntitiesService.RootObject rootObject) {
+            return base.Channel.AssignClassesAsync(account, eventA, prize, sport, team, user, rootObject);
         }
     }
 }
