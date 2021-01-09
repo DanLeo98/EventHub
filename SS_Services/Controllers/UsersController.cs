@@ -20,7 +20,7 @@ namespace EventHub.Controllers
     [Route("users")]
     public class UsersController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
+        string connString = "Server=127.0.0.1;Port=5432;Database=NewEventHub;User Id=postgres;Password=Passworld";
         private IConfiguration _config;
 
         public UsersController(IConfiguration config)
@@ -66,12 +66,12 @@ namespace EventHub.Controllers
         
         
         [HttpPost("login")]
-        public ActionResult Login(string user)
+        public ActionResult Login(string userLoginInput)
         {
             try
             {
-                RootObject root = JsonConvert.DeserializeObject<RootObject>(user);
-                switch (ValidateUser(root.User))
+                User userLogging = JsonConvert.DeserializeObject<User>(userLoginInput);
+                switch (ValidateUser(userLogging))
                 {
                     case 0:
                         var token = GenerateTokenJWT();
@@ -81,7 +81,7 @@ namespace EventHub.Controllers
                     default:
                         return StatusCode(StatusCodes.Status503ServiceUnavailable);
                 }
-            } catch (Exception e)
+            } catch (Exception)
             {
                 return BadRequest();
             }

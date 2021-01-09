@@ -19,7 +19,7 @@ namespace EventHub.Controllers
     [Route("events")]
     public class EventsController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
+        string connString = "Server=127.0.0.1;Port=5432;Database=NewEventHub;User Id=postgres;Password=Passworld";
         
         [HttpGet("getFriendlyEvents")]
         public ActionResult GetFriendlyEvents()
@@ -43,7 +43,7 @@ namespace EventHub.Controllers
                         friendly.InitialDate = reader.GetDateTime(2);
                         friendly.EndDate = reader.GetDateTime(3);
                         friendly.Description = reader.GetString(4);
-                        friendly.Slots = reader.GetInt32(5);
+                        friendly.Slots = reader.GetInt32(5); 
                         friendly.Local = reader.GetString(6);
                         friendly.Status = (EventStatus)reader.GetInt32(7);
                         friendly.TeamMax = reader.GetInt32(11);
