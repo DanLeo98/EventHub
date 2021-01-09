@@ -21,8 +21,6 @@ namespace EventHub.Controllers
     {
         string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
         
-        //ELIMINATE AFTER TESTING
-        [Authorize]
         [HttpGet("getFriendlyEvents")]
         public ActionResult GetFriendlyEvents()
         {
@@ -48,6 +46,7 @@ namespace EventHub.Controllers
                         friendly.Slots = reader.GetInt32(5);
                         friendly.Local = reader.GetString(6);
                         friendly.Status = (EventStatus)reader.GetInt32(7);
+                        friendly.TeamMax = reader.GetInt32(11);
 
                         events.Add(friendly);
                     }
@@ -59,6 +58,53 @@ namespace EventHub.Controllers
             return Ok(events);
 
         }
+
+        [HttpGet("getCompEvents")]
+        public ActionResult GetCompEvents()
+        {
+            List<Event> events = new List<Event>();
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = "SELECT * FROM event WHERE entryFee IS NOT NULL;";
+                    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+                    NpgsqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Event comp = new Event();
+
+                        comp.Id = reader.GetInt32(0);
+                        comp.Name = reader.GetString(1);
+                        comp.InitialDate = reader.GetDateTime(2);
+                        comp.EndDate = reader.GetDateTime(3);
+                        comp.Description = reader.GetString(4);
+                        comp.Slots = reader.GetInt32(5);
+                        comp.Local = reader.GetString(6);
+                        comp.Status = (EventStatus)reader.GetInt32(7);
+                        comp.EntryFee = reader.GetInt32(8);
+                        comp.TeamMax = reader.GetInt32(11);
+
+                        events.Add(comp);
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable);
+            }
+            return Ok(events);
+
+        }
+        /*
+        public ActionResult EditEvent
+        {
+            retu
+        }
+        */
 
         [Authorize]
         [HttpPost("createFriendlyEvent")]
@@ -96,6 +142,7 @@ namespace EventHub.Controllers
                 return BadRequest();
             }
         }
+
 
         private bool ValidateObject(Event eve) {
             return true;
