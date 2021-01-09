@@ -27,38 +27,43 @@ namespace EventHub.Controllers
         {
             _config = config;
         }
-        /*
-        //FIX THIS ACTION
+        
         [HttpPost("registerUser")]
         public ActionResult Register(string use)
         {
-            RootObject root = JsonConvert.DeserializeObject<RootObject>(use);
-            if (root.User.ValidateObject())
+            try
             {
-                try
+                RootObject root = JsonConvert.DeserializeObject<RootObject>(use);
+                if (ValidateObject(root.User))
                 {
-                    using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                    try
                     {
-                        conn.Open();
-                        //Create account
-                        string query = "INSERT INTO user(name,email,password,accountid)" +
-                            "VALUES('" + root.User.Name + "','" + root.User.Email + "','" + root.User.Password + "'," + root.User.account.AccountId + ");";
-                        NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-                        int rowsAff = cmd.ExecuteNonQuery();
-                        conn.Close();
+                        using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                        {
+                            conn.Open();
+                            //Create account
+                            string query = "INSERT INTO user(name,email,password,accountid)" +
+                                "VALUES('" + root.User.Name + "','" + root.User.Email + "','" + root.User.Password + "'," + root.User.AccountId + ");";
+                            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+                            int rowsAff = cmd.ExecuteNonQuery(); //TEST number
+                            conn.Close();
 
-                        if (rowsAff == 1) return Ok();
+                            if (rowsAff == 1) return Ok();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return StatusCode(StatusCodes.Status503ServiceUnavailable);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable);
-                }
+                return StatusCode(StatusCodes.Status406NotAcceptable);
+            } catch (Exception e)
+            {
+                return BadRequest();
             }
-            return Unauthorized();
         }
-        */
+        
         
         [HttpPost("login")]
         public ActionResult Login(string user)
@@ -69,7 +74,6 @@ namespace EventHub.Controllers
                 switch (ValidateUser(root.User))
                 {
                     case 0:
-                        IConfiguration config;
                         var token = GenerateTokenJWT();
                         return Ok(token);
                     case 1:
@@ -85,9 +89,7 @@ namespace EventHub.Controllers
 
 
         #region SUPPORT FUNCTIONS
-        // TURN PRIVATE AFTER TESTING
-        [HttpGet("validateUseTest")]
-        public int ValidateUser(User user)
+        private int ValidateUser(User user)
         {
             try
             {
@@ -135,8 +137,6 @@ namespace EventHub.Controllers
         {
             return true;
         }
-        
-
         #endregion
 
 

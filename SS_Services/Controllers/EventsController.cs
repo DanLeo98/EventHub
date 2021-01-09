@@ -21,6 +21,8 @@ namespace EventHub.Controllers
     {
         string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
         
+        //ELIMINATE AFTER TESTING
+        [Authorize]
         [HttpGet("getFriendlyEvents")]
         public ActionResult GetFriendlyEvents()
         {
