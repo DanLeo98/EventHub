@@ -112,7 +112,7 @@ namespace EventHub.Controllers
                         conn.Open();
 
                         string query = "update event set name = '"+ev.Name+"', initial_date = '"+ev.InitialDate.ToString("yyyy-MM-dd") +"',end_Date = '"+ev.EndDate.ToString("yyyy-MM-dd" )+ "', description = '"+ev.Description+"', " +
-                            "slots = "+ev.Slots+", local = '"+ev.Local+"', status = "+(int)ev.Status+", sportid = "+ev.SportId+", userid = "+ev.UserId+",  team_max = "+ev.TeamMax+" where id = "+ev.Id+"; ";
+                            "slots = "+ev.Slots+", local = '"+ev.Local+"', status = "+(int)ev.Status+ ", entryFee = "+ev.EntryFee+", sportid = " +ev.SportId+", userid = "+ev.UserId+",  team_max = "+ev.TeamMax+" where id = "+ev.Id+"; ";
                         NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
                         int rowsAff = cmd.ExecuteNonQuery();
                         conn.Close();
@@ -145,9 +145,9 @@ namespace EventHub.Controllers
                         {
                             conn.Open();
 
-                            string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,sportid,userid,team_max)" +
+                            string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,entryFee,sportid,userid,team_max)" +
                                 "VALUES('" + ev + "','" + ev.InitialDate.ToString("yyyy-MM-dd") + "','" + ev.EndDate.ToString("yyyy-MM-dd") + "','"
-                                + ev.Description + "'," + ev.Slots + ",'" + ev.Local + "'," + (int)ev.Status + "," + ev.SportId + "," + ev.UserId + "," + ev.TeamMax + ");";
+                                + ev.Description + "'," + ev.Slots + ",'" + ev.Local + "'," + (int)ev.Status + "," + ev.EntryFee + ","+ ev.SportId + "," + ev.UserId + "," + ev.TeamMax + ");";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
                             int rowsAff = cmd.ExecuteNonQuery();
                             conn.Close();
