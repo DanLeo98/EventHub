@@ -148,6 +148,9 @@ namespace Entities.EntitiesService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int TeamMaxField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -297,6 +300,19 @@ namespace Entities.EntitiesService {
                 if ((this.TeamMaxField.Equals(value) != true)) {
                     this.TeamMaxField = value;
                     this.RaisePropertyChanged("TeamMax");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
                 }
             }
         }

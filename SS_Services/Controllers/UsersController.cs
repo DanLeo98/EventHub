@@ -17,7 +17,7 @@ using Entities.EntitiesService;
 namespace EventHub.Controllers
 {
     [ApiController]
-    [Route("users")]
+    [Route("api/users")]
     public class UsersController : Controller
     {
         string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
@@ -27,14 +27,14 @@ namespace EventHub.Controllers
         {
             _config = config;
         }
-        
+
         [HttpPost("registerUser")]
-        public ActionResult Register(string use)
+        public ActionResult Register([FromBody] User user)
         {
             try
             {
-                RootObject root = JsonConvert.DeserializeObject<RootObject>(use);
-                if (ValidateObject(root.User))
+                //RootObject root = JsonConvert.DeserializeObject<RootObject>(use);
+                if (ValidateObject(user))
                 {
                     try
                     {
@@ -43,7 +43,7 @@ namespace EventHub.Controllers
                             conn.Open();
                             //Create account
                             string query = "INSERT INTO user(name,email,password,accountid)" +
-                                "VALUES('" + root.User.Name + "','" + root.User.Email + "','" + root.User.Password + "'," + root.User.AccountId + ");";
+                                "VALUES('" + user + "','" + user + "','" + user + "'," + user + ");";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
                             int rowsAff = cmd.ExecuteNonQuery(); //TEST number
                             conn.Close();
@@ -63,15 +63,16 @@ namespace EventHub.Controllers
                 return BadRequest();
             }
         }
-        
-        
+
+
         [HttpPost("login")]
-        public ActionResult Login(string user)
+        public ActionResult Login([FromBody] User user)
         {
             try
             {
-                RootObject root = JsonConvert.DeserializeObject<RootObject>(user);
-                switch (ValidateUser(root.User))
+                //RootObject root = JsonConvert.DeserializeObject<RootObject>(user);
+                // ELIMINATE TRY
+                switch (ValidateUser(user))
                 {
                     case 0:
                         var token = GenerateTokenJWT();

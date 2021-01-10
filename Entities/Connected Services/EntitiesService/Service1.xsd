@@ -23,6 +23,7 @@
       <xs:element minOccurs="0" name="SportId" type="xs:int" />
       <xs:element minOccurs="0" name="Status" type="tns:EventStatus" />
       <xs:element minOccurs="0" name="TeamMax" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Event" nillable="true" type="tns:Event" />

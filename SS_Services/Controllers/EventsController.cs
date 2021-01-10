@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace EventHub.Controllers
 {
     [ApiController]
-    [Route("events")]
+    [Route("api/events")]
     public class EventsController : Controller
     {
         string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
@@ -84,7 +84,7 @@ namespace EventHub.Controllers
                         comp.Slots = reader.GetInt32(5);
                         comp.Local = reader.GetString(6);
                         comp.Status = (EventStatus)reader.GetInt32(7);
-                        comp.EntryFee = reader.GetInt32(8);
+                        comp.EntryFee = reader.GetFloat(8);
                         comp.TeamMax = reader.GetInt32(11);
 
                         events.Add(comp);
@@ -99,21 +99,23 @@ namespace EventHub.Controllers
             return Ok(events);
 
         }
+        
         /*
-        public ActionResult EditEvent
+        public ActionResult EditEvent()
         {
-            retu
+
         }
         */
 
-        [Authorize]
+        [Authorize] //IS NOT WORKING
         [HttpPost("createFriendlyEvent")]
-        public ActionResult CreateFriendlyEvent(string ev, int userId)
+        public ActionResult CreateFriendlyEvent([FromBody] Event ev)
         {
             try
             {
-            RootObject root = JsonConvert.DeserializeObject<RootObject>(ev);
-                if (ValidateObject(root.Event))
+            //RootObject root = JsonConvert.DeserializeObject<RootObject>(ev);
+            // ELIMINATE TRY
+                if (ValidateObject(ev))
                 {
                     try
                     {
@@ -122,8 +124,8 @@ namespace EventHub.Controllers
                             conn.Open();
 
                             string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,sportid,userid,team_max)" +
-                                "VALUES('" + root.Event.Name + "','" + root.Event.InitialDate.ToString("yyyy-MM-dd") + "','" + root.Event.EndDate.ToString("yyyy-MM-dd") + "','"
-                                + root.Event.Description + "'," + root.Event.Slots + ",'" + root.Event.Local + "'," + (int)root.Event.Status + "," + root.Event.SportId + "," + userId + "," + root.Event.TeamMax + ");";
+                                "VALUES('" + ev + "','" + ev.InitialDate.ToString("yyyy-MM-dd") + "','" + ev.EndDate.ToString("yyyy-MM-dd") + "','"
+                                + ev.Description + "'," + ev.Slots + ",'" + ev.Local + "'," + (int)ev.Status + "," + ev.SportId + "," + ev.UserId + "," + ev.TeamMax + ");";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
                             int rowsAff = cmd.ExecuteNonQuery();
                             conn.Close();
