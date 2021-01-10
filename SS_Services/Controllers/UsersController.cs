@@ -20,7 +20,7 @@ namespace EventHub.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
+        string connString = "Server=127.0.0.1;Port=5432;Database=NewEventHub;User Id=postgres;Password=Passworld";
         private IConfiguration _config;
 
         public UsersController(IConfiguration config)
@@ -82,7 +82,7 @@ namespace EventHub.Controllers
                     default:
                         return StatusCode(StatusCodes.Status503ServiceUnavailable);
                 }
-            } catch (Exception e)
+            } catch (Exception)
             {
                 return BadRequest();
             }
