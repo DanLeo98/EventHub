@@ -100,7 +100,7 @@ namespace EventHub.Controllers
 
         }
 
-        [HttpPut("getCompEvents")]
+        [HttpPut("editEvent")]
         public ActionResult EditEvent([FromBody] Event ev)
         {
             if (ValidateObject(ev))
@@ -111,9 +111,8 @@ namespace EventHub.Controllers
                     {
                         conn.Open();
 
-                        string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,sportid,userid,team_max)" +
-                            "VALUES('" + ev + "','" + ev.InitialDate.ToString("yyyy-MM-dd") + "','" + ev.EndDate.ToString("yyyy-MM-dd") + "','"
-                            + ev.Description + "'," + ev.Slots + ",'" + ev.Local + "'," + (int)ev.Status + "," + ev.SportId + "," + ev.UserId + "," + ev.TeamMax + ");";
+                        string query = "update event set name = '"+ev.Name+"', initial_date = '"+ev.InitialDate.ToString("yyyy-MM-dd") +"',end_Date = '"+ev.EndDate.ToString("yyyy-MM-dd" )+ "', description = '"+ev.Description+"', " +
+                            "slots = "+ev.Slots+", local = '"+ev.Local+"', status = "+(int)ev.Status+", sportid = "+ev.SportId+", userid = "+ev.UserId+",  team_max = "+ev.TeamMax+" where id = "+ev.Id+"; ";
                         NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
                         int rowsAff = cmd.ExecuteNonQuery();
                         conn.Close();
@@ -131,8 +130,8 @@ namespace EventHub.Controllers
         
 
         [Authorize] //IS NOT WORKING
-        [HttpPost("createFriendlyEvent")]
-        public ActionResult CreateFriendlyEvent([FromBody] Event ev)
+        [HttpPost("createEvent")]
+        public ActionResult CreateEvent([FromBody] Event ev)
         {
             try
             {
