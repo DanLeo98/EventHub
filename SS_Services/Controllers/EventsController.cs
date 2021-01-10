@@ -127,9 +127,8 @@ namespace EventHub.Controllers
             }
             return BadRequest();
         }
-        
-
-        [Authorize] //IS NOT WORKING
+       
+        //[Authorize] //IS NOT WORKING
         [HttpPost("createEvent")]
         public ActionResult CreateEvent([FromBody] Event ev)
         {
@@ -167,6 +166,40 @@ namespace EventHub.Controllers
             }
         }
 
+        [HttpPost("joinEvent")]
+        public ActionResult JoinEvent([FromBody] Event ev)
+        {
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = "insert into team(position,eventId) values (0,"+ev.Id+");";
+                    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+                    int rowsAff = cmd.ExecuteNonQuery();
+                    if (rowsAff == 1)
+                    {
+                        query = "select id from team where eventid = "+ev.Id+";";
+                        NpgsqlCommand cmd1 = new NpgsqlCommand(query, conn);
+                        int teamId = (int)cmd1.ExecuteScalar();
+                        query = "insert into roster values("+ev.UserId+","+teamId+");";
+                        NpgsqlCommand cmd2 = new NpgsqlCommand(query, conn);
+                        cmd2.ExecuteNonQuery();
+                        conn.Close();
+                    } else
+                    {
+                        conn.Close();
+                        return NotFound();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable);
+            }
+            return Ok();
+        }
 
         private bool ValidateObject(Event eve) {
             return true;
