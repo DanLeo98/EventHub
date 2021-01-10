@@ -39,6 +39,7 @@
   <xs:element name="EventStatus" nillable="true" type="tns:EventStatus" />
   <xs:complexType name="Prize">
     <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
       <xs:element minOccurs="0" name="Position" type="tns:Place" />
       <xs:element minOccurs="0" name="Value" type="xs:int" />
     </xs:sequence>
@@ -113,11 +114,17 @@
   </xs:simpleType>
   <xs:element name="Place" nillable="true" type="tns:Place" />
   <xs:complexType name="Sport">
-    <xs:sequence />
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
   </xs:complexType>
   <xs:element name="Sport" nillable="true" type="tns:Sport" />
   <xs:complexType name="Team">
-    <xs:sequence />
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Position" type="tns:Place" />
+    </xs:sequence>
   </xs:complexType>
   <xs:element name="Team" nillable="true" type="tns:Team" />
   <xs:complexType name="User">
@@ -132,7 +139,11 @@
   <xs:element name="User" nillable="true" type="tns:User" />
   <xs:complexType name="RootObject">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Account" nillable="true" type="tns:Account" />
       <xs:element minOccurs="0" name="Event" nillable="true" type="tns:Event" />
+      <xs:element minOccurs="0" name="Prize" nillable="true" type="tns:Prize" />
+      <xs:element minOccurs="0" name="Sport" nillable="true" type="tns:Sport" />
+      <xs:element minOccurs="0" name="Team" nillable="true" type="tns:Team" />
       <xs:element minOccurs="0" name="User" nillable="true" type="tns:User" />
     </xs:sequence>
   </xs:complexType>

@@ -357,6 +357,9 @@ namespace Entities.EntitiesService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Entities.EntitiesService.Place PositionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -369,6 +372,19 @@ namespace Entities.EntitiesService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
             }
         }
         
@@ -449,6 +465,12 @@ namespace Entities.EntitiesService {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -456,6 +478,32 @@ namespace Entities.EntitiesService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
             }
         }
         
@@ -478,6 +526,12 @@ namespace Entities.EntitiesService {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Entities.EntitiesService.Place PositionField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -485,6 +539,32 @@ namespace Entities.EntitiesService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Entities.EntitiesService.Place Position {
+            get {
+                return this.PositionField;
+            }
+            set {
+                if ((this.PositionField.Equals(value) != true)) {
+                    this.PositionField = value;
+                    this.RaisePropertyChanged("Position");
+                }
             }
         }
         
@@ -617,7 +697,19 @@ namespace Entities.EntitiesService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Entities.EntitiesService.Account AccountField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Entities.EntitiesService.Event EventField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Entities.EntitiesService.Prize PrizeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Entities.EntitiesService.Sport SportField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Entities.EntitiesService.Team TeamField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Entities.EntitiesService.User UserField;
@@ -633,6 +725,19 @@ namespace Entities.EntitiesService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public Entities.EntitiesService.Account Account {
+            get {
+                return this.AccountField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AccountField, value) != true)) {
+                    this.AccountField = value;
+                    this.RaisePropertyChanged("Account");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public Entities.EntitiesService.Event Event {
             get {
                 return this.EventField;
@@ -641,6 +746,45 @@ namespace Entities.EntitiesService {
                 if ((object.ReferenceEquals(this.EventField, value) != true)) {
                     this.EventField = value;
                     this.RaisePropertyChanged("Event");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Entities.EntitiesService.Prize Prize {
+            get {
+                return this.PrizeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PrizeField, value) != true)) {
+                    this.PrizeField = value;
+                    this.RaisePropertyChanged("Prize");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Entities.EntitiesService.Sport Sport {
+            get {
+                return this.SportField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SportField, value) != true)) {
+                    this.SportField = value;
+                    this.RaisePropertyChanged("Sport");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Entities.EntitiesService.Team Team {
+            get {
+                return this.TeamField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TeamField, value) != true)) {
+                    this.TeamField = value;
+                    this.RaisePropertyChanged("Team");
                 }
             }
         }

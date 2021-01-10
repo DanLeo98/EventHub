@@ -20,7 +20,7 @@ namespace EventHub.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=NewEventHub;User Id=postgres;Password=Passworld";
+        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
         private IConfiguration _config;
 
         public UsersController(IConfiguration config)
@@ -124,12 +124,12 @@ namespace EventHub.Controllers
         {
             var issuer = _config["Jwt:Issuer"];
             var audience = _config["Jwt:Audience"];
-            var expiry = DateTime.Now.AddMinutes(5);  //5 minute valid
+            var expiry = DateTime.Now.AddMinutes(120);  //120 minute valid
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(issuer: issuer, audience: audience, expires: DateTime.Now.AddMinutes(2), signingCredentials: credentials);
-
+            //var token = new JwtSecurityToken(issuer: issuer, expires: DateTime.Now.AddMinutes(2), signingCredentials: credentials);
             var tokenHandler = new JwtSecurityTokenHandler();
             var stringToken = tokenHandler.WriteToken(token);
             return stringToken;
