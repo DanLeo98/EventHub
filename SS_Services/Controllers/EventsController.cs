@@ -100,6 +100,7 @@ namespace EventHub.Controllers
 
         }
 
+        [Authorize]
         [HttpPut("editEvent")]
         public ActionResult EditEvent([FromBody] Event ev)
         {
@@ -128,7 +129,7 @@ namespace EventHub.Controllers
             return BadRequest();
         }
        
-        //[Authorize] //IS NOT WORKING
+        [Authorize] //IS NOT WORKING
         [HttpPost("createEvent")]
         public ActionResult CreateEvent([FromBody] Event ev)
         {

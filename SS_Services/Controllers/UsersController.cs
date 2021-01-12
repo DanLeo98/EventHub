@@ -28,6 +28,7 @@ namespace EventHub.Controllers
             _config = config;
         }
 
+        [Authorize]
         [HttpPost("registerUser")]
         public ActionResult Register([FromBody] User user)
         {
