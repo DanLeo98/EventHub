@@ -15,7 +15,8 @@ namespace EventHub.Controllers
     {
         string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
 
-        [HttpGet("getTeams/{id}")]
+
+        [HttpGet("getTeams/{userId}")]
         public ActionResult getTeams([FromRoute] int userId)
         {
             Dictionary<Event,int> events = new Dictionary<Event,int>();
@@ -52,7 +53,7 @@ namespace EventHub.Controllers
             return Ok(events);
         }
 
-        [HttpGet("getTeamDetails/{id}")]
+        [HttpGet("getTeamDetails/{teamId}")]
         public ActionResult getTeamDetails([FromRoute] int teamId)
         {
             List<User> teamMembers = new List<User>();
