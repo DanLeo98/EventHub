@@ -7,7 +7,6 @@ using System.Configuration;
 using System.Data;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Entities.EntitiesService;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;

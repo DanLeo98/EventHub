@@ -11,7 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Newtonsoft.Json;
-using Entities.EntitiesService;
 
 
 namespace EventHub.Controllers
