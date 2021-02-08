@@ -20,6 +20,7 @@ namespace EventHub.Controllers
     {
         string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
 
+        [Authorize]
         [HttpGet("getFriendlyEvents")]
         public ActionResult GetFriendlyEvents()
         {
@@ -103,7 +104,7 @@ namespace EventHub.Controllers
         [HttpPut("editEvent")]
         public ActionResult EditEvent([FromBody] Event ev)
         {
-            if (ValidateObject(ev))
+            if (ev.ValidateObject())
             {
                 try
                 {
@@ -136,7 +137,7 @@ namespace EventHub.Controllers
             {
             //RootObject root = JsonConvert.DeserializeObject<RootObject>(ev);
             // ELIMINATE TRY
-                if (ValidateObject(ev))
+                if (ev.ValidateObject())
                 {
                     try
                     {
@@ -201,9 +202,7 @@ namespace EventHub.Controllers
             return Ok();
         }
 
-        private bool ValidateObject(Event eve) {
-            return true;
-        }
+        
 
     }
 }

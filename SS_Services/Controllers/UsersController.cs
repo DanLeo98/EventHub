@@ -34,18 +34,32 @@ namespace EventHub.Controllers
             try
             {
                 //RootObject root = JsonConvert.DeserializeObject<RootObject>(use);
-                if (ValidateObject(user))
+                if (user.ValidateObject())
                 {
                     try
                     {
                         using (NpgsqlConnection conn = new NpgsqlConnection(connString))
                         {
                             conn.Open();
+                            //Parameterized query
                             //Create account
                             string query = "INSERT INTO user(name,email,password,accountid)" +
-                                "VALUES('" + user + "','" + user + "','" + user + "'," + user + ");";
+                                "VALUES(@name,@email,@pass,@acc);";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-                            int rowsAff = cmd.ExecuteNonQuery(); //TEST number
+
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", user.Name);
+                            cmd.Parameters.Add(p_name);
+
+                            NpgsqlParameter p_email = new NpgsqlParameter("@email", user.Email);
+                            cmd.Parameters.Add(p_email);
+
+                            NpgsqlParameter p_pass = new NpgsqlParameter("@pass", user.Password);
+                            cmd.Parameters.Add(p_pass);
+
+                            NpgsqlParameter p_acc = new NpgsqlParameter("@acc", user.AccountId);
+                            cmd.Parameters.Add(p_acc);
+
+                            int rowsAff = cmd.ExecuteNonQuery();
                             conn.Close();
 
                             if (rowsAff == 1) return Ok();
@@ -72,7 +86,7 @@ namespace EventHub.Controllers
             {
                 //RootObject root = JsonConvert.DeserializeObject<RootObject>(user);
                 // ELIMINATE TRY
-                switch (ValidateUser(user))
+                switch (user.ValidateUser(connString))
                 {
                     case 0:
                         var token = GenerateTokenJWT();
@@ -90,36 +104,6 @@ namespace EventHub.Controllers
 
 
         #region SUPPORT FUNCTIONS
-        private int ValidateUser(User user)
-        {
-            try
-            {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
-                {
-                    conn.Open();
-                    string query = "SELECT * FROM \"user\" WHERE email = '" + user.Email + "' AND password = '" + user.Password + "';";
-                    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-                    NpgsqlDataReader reader = cmd.ExecuteReader();
-                    int rowsAff = 0;
-                    reader.Read();
-                    while (reader.IsOnRow)
-                    {
-                        rowsAff++;
-                        reader.Read();
-                    }
-
-                    conn.Close();
-
-                    if (rowsAff == 1) return 0;
-                    return 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return 2;
-            }
-        }
         private string GenerateTokenJWT()
         {
             var issuer = _config["Jwt:Issuer"];
@@ -133,10 +117,6 @@ namespace EventHub.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var stringToken = tokenHandler.WriteToken(token);
             return stringToken;
-        }
-        private bool ValidateObject(User user)
-        {
-            return true;
         }
         #endregion
 
