@@ -18,7 +18,12 @@ namespace EventHub.Controllers
     [Route("api/events")]
     public class EventsController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
+        private IConfiguration _config;
+
+        public EventsController(IConfiguration config)
+        {
+            _config = config;
+        }
 
         [Authorize]
         [HttpGet("getFriendlyEvents")]
@@ -27,7 +32,7 @@ namespace EventHub.Controllers
             List<Event> events = new List<Event>();
             try
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                 {
                     conn.Open();
 
@@ -65,7 +70,7 @@ namespace EventHub.Controllers
             List<Event> events = new List<Event>();
             try
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                 {
                     conn.Open();
 
@@ -108,7 +113,7 @@ namespace EventHub.Controllers
             {
                 try
                 {
-                    using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                    using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                     {
                         conn.Open();
 
@@ -129,7 +134,7 @@ namespace EventHub.Controllers
             return BadRequest();
         }
        
-        [Authorize] //IS NOT WORKING
+        [Authorize] //IS NOT WORKING    
         [HttpPost("createEvent")]
         public ActionResult CreateEvent([FromBody] Event ev)
         {
@@ -141,7 +146,7 @@ namespace EventHub.Controllers
                 {
                     try
                     {
-                        using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                        using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                         {
                             conn.Open();
 
@@ -149,6 +154,32 @@ namespace EventHub.Controllers
                                 "VALUES('" + ev + "','" + ev.InitialDate.ToString("yyyy-MM-dd") + "','" + ev.EndDate.ToString("yyyy-MM-dd") + "','"
                                 + ev.Description + "'," + ev.Slots + ",'" + ev.Local + "'," + (int)ev.Status + "," + ev.EntryFee + ","+ ev.SportId + "," + ev.UserId + "," + ev.TeamMax + ");";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+                            /*
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
+                            cmd.Parameters.Add(p_name);
+                            */
+
                             int rowsAff = cmd.ExecuteNonQuery();
                             conn.Close();
 
@@ -172,7 +203,7 @@ namespace EventHub.Controllers
         {
             try
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                 {
                     conn.Open();
 

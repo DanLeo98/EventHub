@@ -19,7 +19,6 @@ namespace EventHub.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
         private IConfiguration _config;
 
         public UsersController(IConfiguration config)
@@ -33,12 +32,11 @@ namespace EventHub.Controllers
         {
             try
             {
-                //RootObject root = JsonConvert.DeserializeObject<RootObject>(use);
                 if (user.ValidateObject())
                 {
                     try
                     {
-                        using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                        using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                         {
                             conn.Open();
                             //Parameterized query
@@ -86,7 +84,7 @@ namespace EventHub.Controllers
             {
                 //RootObject root = JsonConvert.DeserializeObject<RootObject>(user);
                 // ELIMINATE TRY
-                switch (user.ValidateUser(connString))
+                switch (user.ValidateUser(_config.GetConnectionString("DefaultConnection")))
                 {
                     case 0:
                         var token = GenerateTokenJWT();
