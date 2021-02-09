@@ -105,7 +105,7 @@ namespace EventHub.Controllers
 
         }
 
-        [Authorize]
+        [Authorize] //WORK FROM SCRATCH
         [HttpPut("editEvent")]
         public ActionResult EditEvent([FromBody] Event ev)
         {
@@ -134,14 +134,12 @@ namespace EventHub.Controllers
             return BadRequest();
         }
        
-        [Authorize] //IS NOT WORKING    
+        [Authorize]
         [HttpPost("createEvent")]
         public ActionResult CreateEvent([FromBody] Event ev)
         {
             try
             {
-            //RootObject root = JsonConvert.DeserializeObject<RootObject>(ev);
-            // ELIMINATE TRY
                 if (ev.ValidateObject())
                 {
                     try
@@ -151,35 +149,42 @@ namespace EventHub.Controllers
                             conn.Open();
 
                             string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,entryFee,sportid,userid,team_max)" +
-                                "VALUES('" + ev + "','" + ev.InitialDate.ToString("yyyy-MM-dd") + "','" + ev.EndDate.ToString("yyyy-MM-dd") + "','"
-                                + ev.Description + "'," + ev.Slots + ",'" + ev.Local + "'," + (int)ev.Status + "," + ev.EntryFee + ","+ ev.SportId + "," + ev.UserId + "," + ev.TeamMax + ");";
+                                "VALUES(@name,@ini_date,@end_date,@desc,@slots,@local,@status,@fee,@sport,@user,@max);";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-                            /*
                             NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
                             cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
-                            cmd.Parameters.Add(p_name);
-                            */
 
+                            NpgsqlParameter p_initial_date = new NpgsqlParameter("@ini_date", ev.InitialDate.ToString("yyyy-MM-dd"));
+                            cmd.Parameters.Add(p_initial_date);
+
+                            NpgsqlParameter p_end_date = new NpgsqlParameter("@end_date", ev.EndDate.ToString("yyyy-MM-dd"));
+                            cmd.Parameters.Add(p_end_date);
+
+                            NpgsqlParameter p_desc = new NpgsqlParameter("@desc", ev.Description);
+                            cmd.Parameters.Add(p_desc);
+
+                            NpgsqlParameter p_slots = new NpgsqlParameter("@slots", ev.Slots);
+                            cmd.Parameters.Add(p_slots);
+
+                            NpgsqlParameter p_local = new NpgsqlParameter("@local", ev.Local);
+                            cmd.Parameters.Add(p_local);
+
+                            NpgsqlParameter p_status = new NpgsqlParameter("@status", ev.Status);
+                            cmd.Parameters.Add(p_status);
+
+                            NpgsqlParameter p_fee = new NpgsqlParameter("@fee", ev.EntryFee);
+                            cmd.Parameters.Add(p_fee);
+
+                            NpgsqlParameter p_sport = new NpgsqlParameter("@sport", ev.SportId);
+                            cmd.Parameters.Add(p_sport);
+
+                            NpgsqlParameter p_user = new NpgsqlParameter("@user", ev.UserId);
+                            cmd.Parameters.Add(p_user);
+
+                            NpgsqlParameter p_max = new NpgsqlParameter("@max", ev.TeamMax);
+                            cmd.Parameters.Add(p_max);
+                            
                             int rowsAff = cmd.ExecuteNonQuery();
                             conn.Close();
 
@@ -198,7 +203,7 @@ namespace EventHub.Controllers
             }
         }
 
-        [HttpPost("joinEvent")]
+        [HttpPost("joinEvent")] //CHECK FIRST
         public ActionResult JoinEvent([FromBody] Event ev)
         {
             try
@@ -207,8 +212,12 @@ namespace EventHub.Controllers
                 {
                     conn.Open();
 
-                    string query = "insert into team(position,eventId) values (0,"+ev.Id+");";
+                    string query = "insert into team(position,eventId) values (0,@id);";
                     NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+                    NpgsqlParameter p_id = new NpgsqlParameter("@id", ev.Id);
+                    cmd.Parameters.Add(p_id);
+
                     int rowsAff = cmd.ExecuteNonQuery();
                     if (rowsAff == 1)
                     {

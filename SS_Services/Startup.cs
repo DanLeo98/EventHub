@@ -95,6 +95,8 @@ namespace EventHub
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -104,7 +106,7 @@ namespace EventHub
                 endpoints.MapControllers();
             });
 
-            app.UseAuthentication();
+            
         }
     }
 }
