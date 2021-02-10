@@ -74,7 +74,6 @@ namespace EventHub
             
 
             services.AddControllers().AddNewtonsoftJson();
-            services.AddMvcCore().AddApiExplorer();
 
             //services.AddControllers().AddJsonOptions(options => {
             //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
