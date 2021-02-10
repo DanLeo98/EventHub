@@ -43,7 +43,7 @@ public class User
         //return false;
     }
 
-    public int ValidateUser(string connString)
+    public int ValidateUser(string connString, out int id)
     {
         try
         {
@@ -62,6 +62,7 @@ public class User
                 NpgsqlDataReader reader = cmd.ExecuteReader();
                 int rowsAff = 0;
                 reader.Read();
+                id = reader.GetInt32(0);
                 while (reader.IsOnRow)
                 {
                     rowsAff++;
@@ -77,6 +78,7 @@ public class User
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            id = 0;
             return 2;
         }
     }

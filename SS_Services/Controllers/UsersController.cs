@@ -26,7 +26,6 @@ namespace EventHub.Controllers
             _config = config;
         }
 
-        [Authorize]
         [HttpPost("registerUser")]
         public ActionResult Register([FromBody] User user)
         {
@@ -76,7 +75,6 @@ namespace EventHub.Controllers
             }
         }
 
-
         [HttpPost("login")]
         public ActionResult Login([FromBody] User user)
         {
@@ -84,11 +82,14 @@ namespace EventHub.Controllers
             {
                 //RootObject root = JsonConvert.DeserializeObject<RootObject>(user);
                 // ELIMINATE TRY
-                switch (user.ValidateUser(_config.GetConnectionString("DefaultConnection")))
+                int id;
+                switch (user.ValidateUser(_config.GetConnectionString("DefaultConnection"), out id))
                 {
                     case 0:
                         var token = GenerateTokenJWT();
-                        return Ok(token);
+                        user.Id = id;
+                        Session session = new Session(token, user);
+                        return Ok(session);
                     case 1:
                         return NotFound();
                     default:
@@ -99,7 +100,6 @@ namespace EventHub.Controllers
                 return BadRequest();
             }
         }
-
 
         #region SUPPORT FUNCTIONS
         private string GenerateTokenJWT()
@@ -117,7 +117,5 @@ namespace EventHub.Controllers
             return stringToken;
         }
         #endregion
-
-
     }
 }

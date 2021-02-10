@@ -25,7 +25,6 @@ namespace EventHub.Controllers
             _config = config;
         }
 
-        [Authorize]
         [HttpGet("getFriendlyEvents")]
         public ActionResult GetFriendlyEvents()
         {
@@ -170,7 +169,7 @@ namespace EventHub.Controllers
                             NpgsqlParameter p_local = new NpgsqlParameter("@local", ev.Local);
                             cmd.Parameters.Add(p_local);
 
-                            NpgsqlParameter p_status = new NpgsqlParameter("@status", ev.Status);
+                            NpgsqlParameter p_status = new NpgsqlParameter("@status", (int)ev.Status);
                             cmd.Parameters.Add(p_status);
 
                             NpgsqlParameter p_fee = new NpgsqlParameter("@fee", ev.EntryFee);
@@ -204,7 +203,7 @@ namespace EventHub.Controllers
         }
 
         [HttpPost("joinEvent")] //CHECK FIRST
-        public ActionResult JoinEvent([FromBody] Event ev)
+        public ActionResult JoinEvent([FromRoute] Event ev)
         {
             try
             {
