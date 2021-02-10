@@ -40,7 +40,7 @@ namespace EventHub.Controllers
                             conn.Open();
                             //Parameterized query
                             //Create account
-                            string query = "INSERT INTO user(name,email,password,accountid)" +
+                            string query = "INSERT INTO \"user\"(name,email,password,accountid)" +
                                 "VALUES(@name,@email,@pass,@acc);";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
