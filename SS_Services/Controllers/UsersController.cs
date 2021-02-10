@@ -38,6 +38,23 @@ namespace EventHub.Controllers
                         using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                         {
                             conn.Open();
+                            string query0 = "INSERT INTO account(bankId)" +
+                                "VALUES(0);";
+                            NpgsqlCommand cmd0 = new NpgsqlCommand(query0, conn);
+                            cmd0.ExecuteNonQuery();
+
+                            string query1 = "SELECT id from account;";
+                            NpgsqlCommand cmd1 = new NpgsqlCommand(query1, conn);
+                            var reader = cmd1.ExecuteReader();
+
+                            int id;
+                            reader.Read();
+                            while (reader.IsOnRow)
+                            {
+                                id = reader.GetInt32(0);
+                                reader.Read();
+                            }
+
                             //Parameterized query
                             //Create account
                             string query = "INSERT INTO \"user\"(name,email,password,accountid)" +
@@ -53,7 +70,7 @@ namespace EventHub.Controllers
                             NpgsqlParameter p_pass = new NpgsqlParameter("@pass", user.Password);
                             cmd.Parameters.Add(p_pass);
 
-                            NpgsqlParameter p_acc = new NpgsqlParameter("@acc", user.AccountId);
+                            NpgsqlParameter p_acc = new NpgsqlParameter("@acc", id);
                             cmd.Parameters.Add(p_acc);
 
                             int rowsAff = cmd.ExecuteNonQuery();
