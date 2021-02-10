@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Npgsql;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.Extensions.Configuration;
 
 namespace EventHub.Controllers
 {
@@ -13,7 +13,13 @@ namespace EventHub.Controllers
     [Route("api/sports")]
     public class SportsController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
+        private IConfiguration _config;
+
+        public SportsController(IConfiguration config)
+        {
+            _config = config;
+        }
+
 
         [HttpGet("getSports")]
         public ActionResult GetSports()
@@ -21,7 +27,7 @@ namespace EventHub.Controllers
             List<Sport> sports = new List<Sport>();
             try
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                using (NpgsqlConnection conn = new NpgsqlConnection((_config.GetConnectionString("DefaultConnection"))))
                 {
                     conn.Open();
 
