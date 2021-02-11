@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace EventHub.Controllers
 {
+    /// <summary>
+    /// Controller that manages sports related functions (get and add)
+    /// </summary>
     [ApiController]
     [Route("api/sports")]
     public class SportsController : Controller
@@ -20,7 +23,10 @@ namespace EventHub.Controllers
             _config = config;
         }
 
-
+        /// <summary>
+        /// Get list of sports
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("getSports")]
         public ActionResult GetSports()
         {

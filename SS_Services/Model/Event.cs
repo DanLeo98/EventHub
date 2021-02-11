@@ -47,12 +47,6 @@ public class Event
     int userId;
     
 
-    /*
-    Data Structures 
-    Dictionary<Team, DateTime> teams;
-    List<Prize> prizeChart;
-    */
-
     #region PROPERTIES
     [JsonProperty("id")]
     public int Id { get => id; set => id = value; }
@@ -100,11 +94,6 @@ public class Event
     public bool ValidateObject()
     {
         if (1 == 1) return true;
-        /*
-         * return false;
-         * teams = new Dictionary<Team, DateTime>(); 
-        prizeChart = new List<Prize>();
-        */
     }
 
 

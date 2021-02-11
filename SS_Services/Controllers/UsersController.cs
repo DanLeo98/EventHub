@@ -15,6 +15,9 @@ using Newtonsoft.Json;
 
 namespace EventHub.Controllers
 {
+    /// <summary>
+    /// Controller that manages login and register
+    /// </summary>
     [ApiController]
     [Route("api/users")]
     public class UsersController : Controller
@@ -26,23 +29,32 @@ namespace EventHub.Controllers
             _config = config;
         }
 
+        /// <summary>
+        /// Registers an user
+        /// </summary>
+        /// <param name="user"> User </param>
+        /// <returns> Register Result </returns>
         [HttpPost("registerUser")]
         public ActionResult Register([FromBody] User user)
         {
             try
             {
+                // Validate Object
                 if (user.ValidateObject())
                 {
                     try
                     {
+                        // Connects to DB
                         using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                         {
                             conn.Open();
+                            // Creates account for user
                             string query0 = "INSERT INTO account(bankId)" +
                                 "VALUES(NULL);";
                             NpgsqlCommand cmd0 = new NpgsqlCommand(query0, conn);
                             cmd0.ExecuteNonQuery();
                             
+                            // Gets user account id
                             string query1 = "SELECT id from account;";
                             NpgsqlCommand cmd1 = new NpgsqlCommand(query1, conn);
                             var reader = cmd1.ExecuteReader();
@@ -55,8 +67,8 @@ namespace EventHub.Controllers
                                 reader.Read();
                             }
                             reader.Close();
-                            //Parameterized query
-                            //Create account
+
+                            // Registers user
                             string query = "INSERT INTO \"user\"(name,email,password,accountid)" +
                                 "VALUES(@name,@email,@pass,@acc);";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
@@ -92,14 +104,19 @@ namespace EventHub.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <param name="user"> User </param>
+        /// <returns>Login result</returns>
         [HttpPost("login")]
         public ActionResult Login([FromBody] User user)
         {
             try
             {
-                //RootObject root = JsonConvert.DeserializeObject<RootObject>(user);
-                // ELIMINATE TRY
                 int id;
+                // Validate user exists
                 switch (user.ValidateUser(_config.GetConnectionString("DefaultConnection"), out id))
                 {
                     case 0:
@@ -119,6 +136,10 @@ namespace EventHub.Controllers
         }
 
         #region SUPPORT FUNCTIONS
+        /// <summary>
+        /// Generation of token
+        /// </summary>
+        /// <returns>Token string</returns>
         private string GenerateTokenJWT()
         {
             var issuer = _config["Jwt:Issuer"];

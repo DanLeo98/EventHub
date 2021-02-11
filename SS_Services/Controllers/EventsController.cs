@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EventHub.Controllers
 {
+    /// <summary>
+    /// Controller to manage event related functions as creation, list...
+    /// </summary>
     [ApiController]
     [Route("api/events")]
     public class EventsController : Controller
@@ -25,6 +28,10 @@ namespace EventHub.Controllers
             _config = config;
         }
 
+        /// <summary>
+        /// Get list of friendly events
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("getFriendlyEvents")]
         public ActionResult GetFriendlyEvents()
         {
@@ -63,6 +70,10 @@ namespace EventHub.Controllers
 
         }
 
+        /// <summary>
+        /// Get list of competitive events
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("getCompEvents")]
         public ActionResult GetCompEvents()
         {
@@ -104,35 +115,11 @@ namespace EventHub.Controllers
 
         }
 
-        [Authorize] //WORK FROM SCRATCH
-        [HttpPut("editEvent")]
-        public ActionResult EditEvent([FromBody] Event ev)
-        {
-            if (ev.ValidateObject())
-            {
-                try
-                {
-                    using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
-                    {
-                        conn.Open();
-
-                        string query = "update event set name = '"+ev.Name+"', initial_date = '"+ev.InitialDate.ToString("yyyy-MM-dd") +"',end_Date = '"+ev.EndDate.ToString("yyyy-MM-dd" )+ "', description = '"+ev.Description+"', " +
-                            "slots = "+ev.Slots+", local = '"+ev.Local+"', status = "+(int)ev.Status+ ", entryFee = "+ev.EntryFee+", sportid = " +ev.SportId+", userid = "+ev.UserId+",  team_max = "+ev.TeamMax+" where id = "+ev.Id+"; ";
-                        NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-                        int rowsAff = cmd.ExecuteNonQuery();
-                        conn.Close();
-
-                        if (rowsAff == 1) return Ok();
-                    }
-                }
-                catch (Exception e)
-                {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable);
-                }
-            }
-            return BadRequest();
-        }
-       
+        /// <summary>
+        /// Registers event
+        /// </summary>
+        /// <param name="ev"> Event </param>
+        /// <returns> Register result </returns>
         [Authorize]
         [HttpPost("createEvent")]
         public ActionResult CreateEvent([FromBody] Event ev)
@@ -147,6 +134,8 @@ namespace EventHub.Controllers
                         {
                             conn.Open();
 
+                            // Insert new event
+                            // Parameterized
                             string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,entryFee,sportid,userid,team_max)" +
                                 "VALUES(@name,@ini_date,@end_date,@desc,@slots,@local,@status,@fee,@sport,@user,@max);";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
@@ -241,7 +230,34 @@ namespace EventHub.Controllers
             return Ok();
         }
 
-        
+        [Authorize] //WORK FROM SCRATCH
+        [HttpPut("editEvent")]
+        public ActionResult EditEvent([FromBody] Event ev)
+        {
+            if (ev.ValidateObject())
+            {
+                try
+                {
+                    using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
+                    {
+                        conn.Open();
+
+                        string query = "update event set name = '" + ev.Name + "', initial_date = '" + ev.InitialDate.ToString("yyyy-MM-dd") + "',end_Date = '" + ev.EndDate.ToString("yyyy-MM-dd") + "', description = '" + ev.Description + "', " +
+                            "slots = " + ev.Slots + ", local = '" + ev.Local + "', status = " + (int)ev.Status + ", entryFee = " + ev.EntryFee + ", sportid = " + ev.SportId + ", userid = " + ev.UserId + ",  team_max = " + ev.TeamMax + " where id = " + ev.Id + "; ";
+                        NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+                        int rowsAff = cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        if (rowsAff == 1) return Ok();
+                    }
+                }
+                catch (Exception e)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable);
+                }
+            }
+            return BadRequest();
+        }
 
     }
 }

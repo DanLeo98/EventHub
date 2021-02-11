@@ -24,7 +24,6 @@ public class User
 
     public User()
     {
-
     }
 
     public User(string name, string email, string password)
@@ -43,6 +42,12 @@ public class User
         //return false;
     }
 
+    /// <summary>
+    /// Validate user exists
+    /// </summary>
+    /// <param name="connString"> Connection string </param>
+    /// <param name="id"> Id of user for output </param>
+    /// <returns></returns>
     public int ValidateUser(string connString, out int id)
     {
         try
@@ -50,6 +55,7 @@ public class User
             using (NpgsqlConnection conn = new NpgsqlConnection(connString))
             {
                 conn.Open();
+                // Show users with given credentials
                 string query = "SELECT * FROM \"user\" WHERE email = @email AND password = @pass;";
                 NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
