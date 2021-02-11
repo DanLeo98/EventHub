@@ -39,22 +39,22 @@ namespace EventHub.Controllers
                         {
                             conn.Open();
                             string query0 = "INSERT INTO account(bankId)" +
-                                "VALUES(0);";
+                                "VALUES(NULL);";
                             NpgsqlCommand cmd0 = new NpgsqlCommand(query0, conn);
                             cmd0.ExecuteNonQuery();
-
+                            
                             string query1 = "SELECT id from account;";
                             NpgsqlCommand cmd1 = new NpgsqlCommand(query1, conn);
                             var reader = cmd1.ExecuteReader();
 
-                            int id;
                             reader.Read();
+                            int id = 0;
                             while (reader.IsOnRow)
                             {
                                 id = reader.GetInt32(0);
                                 reader.Read();
                             }
-
+                            reader.Close();
                             //Parameterized query
                             //Create account
                             string query = "INSERT INTO \"user\"(name,email,password,accountid)" +
