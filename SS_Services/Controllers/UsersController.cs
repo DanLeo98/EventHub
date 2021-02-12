@@ -42,58 +42,12 @@ namespace EventHub.Controllers
                 // Validate Object
                 if (user.ValidateObject())
                 {
-                    try
+                    if (user.Register(_config.GetConnectionString("DefaultConnection")) == 0)
                     {
-                        // Connects to DB
-                        using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
-                        {
-                            conn.Open();
-                            // Creates account for user
-                            string query0 = "INSERT INTO account(bankId)" +
-                                "VALUES(NULL);";
-                            NpgsqlCommand cmd0 = new NpgsqlCommand(query0, conn);
-                            cmd0.ExecuteNonQuery();
-                            
-                            // Gets user account id
-                            string query1 = "SELECT id from account;";
-                            NpgsqlCommand cmd1 = new NpgsqlCommand(query1, conn);
-                            var reader = cmd1.ExecuteReader();
-
-                            reader.Read();
-                            int id = 0;
-                            while (reader.IsOnRow)
-                            {
-                                id = reader.GetInt32(0);
-                                reader.Read();
-                            }
-                            reader.Close();
-
-                            // Registers user
-                            string query = "INSERT INTO \"user\"(name,email,password,accountid)" +
-                                "VALUES(@name,@email,@pass,@acc);";
-                            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-
-                            NpgsqlParameter p_name = new NpgsqlParameter("@name", user.Name);
-                            cmd.Parameters.Add(p_name);
-
-                            NpgsqlParameter p_email = new NpgsqlParameter("@email", user.Email);
-                            cmd.Parameters.Add(p_email);
-
-                            NpgsqlParameter p_pass = new NpgsqlParameter("@pass", user.Password);
-                            cmd.Parameters.Add(p_pass);
-
-                            NpgsqlParameter p_acc = new NpgsqlParameter("@acc", id);
-                            cmd.Parameters.Add(p_acc);
-
-                            int rowsAff = cmd.ExecuteNonQuery();
-                            conn.Close();
-
-                            if (rowsAff == 1) return Ok();
-                        }
+                        return Ok();
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Console.WriteLine(ex.Message);
                         return StatusCode(StatusCodes.Status503ServiceUnavailable);
                     }
                 }

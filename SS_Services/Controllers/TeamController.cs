@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Npgsql;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace EventHub.Controllers
 {
@@ -12,8 +13,12 @@ namespace EventHub.Controllers
     [Route("api/teams")]
     public class TeamController : Controller
     {
-        string connString = "Server=127.0.0.1;Port=5432;Database=EventHub;User Id=postgres;Password=100998";
+        private IConfiguration _config;
 
+        public TeamController(IConfiguration config)
+        {
+            _config = config;
+        }
 
         [HttpGet("getTeams/{userId}")]
         public ActionResult getTeams([FromRoute] int userId)
@@ -21,7 +26,7 @@ namespace EventHub.Controllers
             Dictionary<Event,int> events = new Dictionary<Event,int>();
             try
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                 {
                     conn.Open();
 
@@ -58,7 +63,7 @@ namespace EventHub.Controllers
             List<User> teamMembers = new List<User>();
             try
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+                using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
                 {
                     conn.Open();
 
