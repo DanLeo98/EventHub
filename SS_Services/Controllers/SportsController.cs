@@ -33,22 +33,7 @@ namespace EventHub.Controllers
             List<Sport> sports = new List<Sport>();
             try
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection((_config.GetConnectionString("DefaultConnection"))))
-                {
-                    conn.Open();
-
-                    string query = "SELECT * FROM sport;";
-                    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
-                    NpgsqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Sport sport = new Sport();
-                        sport.Id = reader.GetInt32(0);
-                        sport.Name = reader.GetString(1);
-                        sports.Add(sport);
-                    }
-                    conn.Close();
-                }
+                sports = Sport.GetSports(_config.GetConnectionString("DefaultConnection"));
             }
             catch (Exception ex)
             {
