@@ -129,7 +129,7 @@ public class Event
     public static List<Event> GetComps(string connString)
     {
         List<Event> events = new List<Event>();
-        using (NpgsqlConnection conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection")))
+        using (NpgsqlConnection conn = new NpgsqlConnection(connString))
         {
             conn.Open();
 
