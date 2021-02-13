@@ -81,7 +81,7 @@ namespace EventHub.Controllers
         {
             try
             {
-                if (ev.ValidateObject())
+                if (ev.ValidateEvent())
                 {
                     try
                     {

@@ -92,9 +92,16 @@ public class Event
 
     }
 
-    public bool ValidateObject()
+    /// <summary>
+    /// Verifies if event is valid
+    /// </summary>
+    /// <returns></returns>
+    public bool ValidateEvent()
     {
-        if (1 == 1) return true;
+        if (initialDate > DateTime.Today && endDate > initialDate &&
+            teamMax > 0 && teamMax < slots) return true;
+
+        return false;
     }
 
     public static List<Event> GetFriendlies(string connString)
