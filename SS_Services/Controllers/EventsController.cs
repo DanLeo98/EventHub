@@ -91,17 +91,17 @@ namespace EventHub.Controllers
 
                             // Insert new event
                             // Parameterized
-                            string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,entryFee,sportid,userid,team_max)" +
+                            string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,entryfee,sportid,userid,team_max)" +
                                 "VALUES(@name,@ini_date,@end_date,@desc,@slots,@local,@status,@fee,@sport,@user,@max);";
                             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
                             NpgsqlParameter p_name = new NpgsqlParameter("@name", ev.Name);
                             cmd.Parameters.Add(p_name);
 
-                            NpgsqlParameter p_initial_date = new NpgsqlParameter("@ini_date", ev.InitialDate.ToString("yyyy-MM-dd"));
+                            NpgsqlParameter p_initial_date = new NpgsqlParameter("@ini_date", ev.InitialDate);
                             cmd.Parameters.Add(p_initial_date);
 
-                            NpgsqlParameter p_end_date = new NpgsqlParameter("@end_date", ev.EndDate.ToString("yyyy-MM-dd"));
+                            NpgsqlParameter p_end_date = new NpgsqlParameter("@end_date", ev.EndDate);
                             cmd.Parameters.Add(p_end_date);
 
                             NpgsqlParameter p_desc = new NpgsqlParameter("@desc", ev.Description);
@@ -116,7 +116,9 @@ namespace EventHub.Controllers
                             NpgsqlParameter p_status = new NpgsqlParameter("@status", (int)ev.Status);
                             cmd.Parameters.Add(p_status);
 
-                            NpgsqlParameter p_fee = new NpgsqlParameter("@fee", ev.EntryFee);
+                            NpgsqlParameter p_fee;
+                            if (ev.EntryFee == null) p_fee = new NpgsqlParameter("@fee", DBNull.Value);
+                            else p_fee = new NpgsqlParameter("@fee", ev.EntryFee);
                             cmd.Parameters.Add(p_fee);
 
                             NpgsqlParameter p_sport = new NpgsqlParameter("@sport", ev.SportId);
