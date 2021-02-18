@@ -38,7 +38,9 @@ public class User
 
     public bool ValidateObject()
     {
-        if (1 == 1) return true;
+        bool name = this.Name.All(Char.IsLetter);
+        if (name) return true;
+        return false;
         //return false;
     }
 
