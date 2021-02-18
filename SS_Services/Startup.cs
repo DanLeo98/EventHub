@@ -1,17 +1,22 @@
+/*
+ * Authors: João Rodrigues and Daniel Leonard
+ * Project: Practical Work, implementing services
+ * Current Solution: Client of services for sport events
+ * 
+ * 
+ * Subject: Integration of Informatic Systems
+ * Degree: Graduation on Engeneer of Informatic Systems
+ * Lective Year: 2020/21
+ */
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 
 namespace EventHub

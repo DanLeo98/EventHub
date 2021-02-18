@@ -1,8 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿/*
+ * Authors: João Rodrigues and Daniel Leonard
+ * Project: Practical Work, implementing services
+ * Current Solution: Client of services for sport events
+ * 
+ * 
+ * Subject: Integration of Informatic Systems
+ * Degree: Graduation on Engeneer of Informatic Systems
+ * Lective Year: 2020/21
+ */
+
 using Npgsql;
+using System;
+using System.Linq;
 
 
 public class User

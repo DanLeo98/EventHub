@@ -1,10 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Threading.Tasks;
+﻿/*
+ * Authors: João Rodrigues and Daniel Leonard
+ * Project: Practical Work, implementing services
+ * Current Solution: Client of services for sport events
+ * 
+ * 
+ * Subject: Integration of Informatic Systems
+ * Degree: Graduation on Engeneer of Informatic Systems
+ * Lective Year: 2020/21
+ */
+
 using Newtonsoft.Json;
 using Npgsql;
+using System;
+using System.Collections.Generic;
 
 
 public class RootObject
@@ -163,6 +171,67 @@ public class Event
             conn.Close();
         }
         return events;
+    }
+    public int CreateEvent(string connString)
+    {
+        try
+        {
+            using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+
+                // Insert new event
+                // Parameterized
+                string query = "INSERT INTO event(name,initial_date,end_date,description,slots,local,status,entryfee,sportid,userid,team_max)" +
+                    "VALUES(@name,@ini_date,@end_date,@desc,@slots,@local,@status,@fee,@sport,@user,@max);";
+                NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+                NpgsqlParameter p_name = new NpgsqlParameter("@name", this.Name);
+                cmd.Parameters.Add(p_name);
+
+                NpgsqlParameter p_initial_date = new NpgsqlParameter("@ini_date", this.InitialDate);
+                cmd.Parameters.Add(p_initial_date);
+
+                NpgsqlParameter p_end_date = new NpgsqlParameter("@end_date", this.EndDate);
+                cmd.Parameters.Add(p_end_date);
+
+                NpgsqlParameter p_desc = new NpgsqlParameter("@desc", this.Description);
+                cmd.Parameters.Add(p_desc);
+
+                NpgsqlParameter p_slots = new NpgsqlParameter("@slots", this.Slots);
+                cmd.Parameters.Add(p_slots);
+
+                NpgsqlParameter p_local = new NpgsqlParameter("@local", this.Local);
+                cmd.Parameters.Add(p_local);
+
+                NpgsqlParameter p_status = new NpgsqlParameter("@status", (int)this.Status);
+                cmd.Parameters.Add(p_status);
+
+                NpgsqlParameter p_fee;
+                if (this.EntryFee == null) p_fee = new NpgsqlParameter("@fee", DBNull.Value);
+                else p_fee = new NpgsqlParameter("@fee", this.EntryFee);
+                cmd.Parameters.Add(p_fee);
+
+                NpgsqlParameter p_sport = new NpgsqlParameter("@sport", this.SportId);
+                cmd.Parameters.Add(p_sport);
+
+                NpgsqlParameter p_user = new NpgsqlParameter("@user", this.UserId);
+                cmd.Parameters.Add(p_user);
+
+                NpgsqlParameter p_max = new NpgsqlParameter("@max", this.TeamMax);
+                cmd.Parameters.Add(p_max);
+
+                int rowsAff = cmd.ExecuteNonQuery();
+                conn.Close();
+
+                if (rowsAff == 1) return 0;
+                return 1;
+            }
+        }
+        catch (Exception e)
+        {
+            return 1;
+        }
     }
 
 }
