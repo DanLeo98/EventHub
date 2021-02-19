@@ -29,6 +29,7 @@ namespace EventHub.Controllers
             _config = config;
         }
 
+        /*
         [HttpGet("getTeams/{userId}")]
         public ActionResult getTeams([FromRoute] int userId)
         {
@@ -99,6 +100,7 @@ namespace EventHub.Controllers
             return Ok(teamMembers);
         }
 
-
+        */
     }
+
 }
