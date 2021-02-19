@@ -90,7 +90,7 @@ namespace EventHub.Controllers
                 {
                     try
                     {
-                        if (ev.CreateEvent(_config.GetConnectionString("DefaultConnection")) == 1)
+                        if (ev.CreateEvent(_config.GetConnectionString("DefaultConnection")) == 0)
                         {
                             return Ok();
                         }

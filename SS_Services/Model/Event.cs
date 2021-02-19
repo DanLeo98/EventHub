@@ -107,7 +107,7 @@ public class Event
     public bool ValidateEvent()
     {
         if (initialDate > DateTime.Today && endDate > initialDate &&
-            teamMax > 0 && teamMax < slots) return true;
+            teamMax > 0) return true;
 
         return false;
     }
